@@ -1,0 +1,11 @@
+.student-info{
+    margin: 2%;
+}
+.input-text{
+    margin-left: 10px;
+}
+.returnBtn{
+    flex: 1;
+    justify-content: 'flex-end';
+    margin-bottom: 36;
+}
