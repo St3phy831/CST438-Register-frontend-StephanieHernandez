@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  TextField,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import "./AddStudent.css";
 import Cookies from "js-cookie";
@@ -10,12 +14,17 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 export default function AddStudent() {
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleNameChange = (event) => setName(event.target.value);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  const handleEmailChange = (event) => setEmail(event.target.value);
+  const handleChange = (event) => {
+    if (event.target.name === "name") setName(event.target.value);
+    else setEmail(event.target.value);
+  };
 
   const addStudent = () => {
     const token = Cookies.get("XSRF-TOKEN");
@@ -56,61 +65,54 @@ export default function AddStudent() {
 
   return (
     <div>
-      <div>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              {"Add Student "}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </div>
-      <div align="left" className="student-info">
-        <form>
-          <label>
-            Name:
-            <input
-              type="text"
-              className="input-text"
-              name="name"
-              value={name}
-              onChange={handleNameChange}
-            />
-          </label>
-          <br></br>
-          <br></br>
-          <label>
-            Email Address:
-            <input
-              type="text"
-              className="input-text"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-            />
-          </label>
-          <br></br>
-          <div>
-            <Button
-              variant="outlined"
-              color="primary"
-              style={{ marginTop: 20 }}
-              onClick={addStudent}
-            >
-              Add Student
-            </Button>
-            <Button
-              component={Link}
-              to={{ pathname: "/" }}
-              variant="outlined"
-              color="secondary"
-              style={{ marginTop: 20, marginLeft: 20 }}
-            >
-              Return
-            </Button>
-          </div>
-        </form>
-      </div>
+      <Button
+        component={Link}
+        variant="outlined"
+        color="primary"
+        style={{ margin: 10 }}
+        onClick={handleClickOpen}
+      >
+        Add Student
+      </Button>
+      <Button
+        component={Link}
+        to={{ pathname: "/" }}
+        variant="outlined"
+        color="secondary"
+        style={{ margin: 10 }}
+      >
+        Return
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Student</DialogTitle>
+        <DialogContent style={{ paddingTop: 20 }}>
+          <TextField
+            autoFocus
+            fullWidth
+            label="Name"
+            name="name"
+            value={name}
+            onChange={handleChange}
+          />
+          <br />
+          <br />
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            value={email}
+            onChange={handleChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button color="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button id="Add" color="primary" onClick={addStudent}>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
       <ToastContainer autoClose={1500} />
     </div>
   );
