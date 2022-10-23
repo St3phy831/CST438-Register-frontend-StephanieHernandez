@@ -66,6 +66,7 @@ export default function AddStudent() {
   return (
     <div>
       <Button
+        id="AddStudent"
         component={Link}
         variant="outlined"
         color="primary"
@@ -113,7 +114,7 @@ export default function AddStudent() {
           </Button>
         </DialogActions>
       </Dialog>
-      <ToastContainer autoClose={1500} />
+      <ToastContainer autoClose={2500} />
     </div>
   );
 }
